@@ -1,0 +1,12 @@
+.spinner {
+  align-items: center;
+  text-align: center;
+  margin: auto;
+  padding-top: 15%;
+  padding-left: 40%;
+  padding-right: 20px;
+  height: 100%;
+  background-color: azure;
+  width: 100%;
+  position: fixed;
+}

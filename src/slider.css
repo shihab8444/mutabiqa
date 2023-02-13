@@ -1,0 +1,38 @@
+.slider {
+  padding: 10px;
+  margin: 5px;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+}
+.header {
+  border-bottom: 1px solid darkgray;
+
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+}
+.box {
+  padding: 10px;
+  margin: 20px;
+  position: relative;
+  border-width: 50%;
+
+  size: 2px;
+}
+
+.border {
+  border: 2px;
+  border-width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  border-collapse: separate;
+  border-spacing: 15px 50px;
+  /* margin-left: 20px;
+  margin-right: 20px; */
+  /* padding-left: 20px;
+  padding-right: 20px; */
+}
