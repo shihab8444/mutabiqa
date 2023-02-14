@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Modal.css'
-
+import { GoogleLogin } from '@react-oauth/google'
 function FadeInSection(props) {
   const [isVisible, setVisible] = useState(false)
   const domRef = useRef()
@@ -8,7 +8,7 @@ function FadeInSection(props) {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        console.log(`entry`, entry, `is = ${entry.isIntersecting}`)
+        // console.log(`entry`, entry, `is = ${entry.isIntersecting}`)
         setVisible(entry.isIntersecting)
       })
     })
@@ -70,6 +70,7 @@ export default function Modal() {
             </div>
             <div className='second-row'>
               <button className='language'>Language</button>
+
               <button onClick={toggleModal} className='login'>
                 Login
               </button>
@@ -82,7 +83,6 @@ export default function Modal() {
               <div className='register'>
                 <div className='fade-in-text'>
                   <p className='text'>Fill In The Gap, Changing The Trend</p>
-
                   <div class='container'>
                     <div class='center'>
                       <button class='btn' onClick={toggleModal}>
