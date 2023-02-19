@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Modal.css'
-import { GoogleLogin } from '@react-oauth/google'
+import { useGoogleLogin } from '@react-oauth/google'
+import axios from 'axios'
 function FadeInSection(props) {
   const [isVisible, setVisible] = useState(false)
   const domRef = useRef()
@@ -29,9 +30,14 @@ function FadeInSection(props) {
 }
 
 export default function Modal() {
+  const [user, setuser] = useState(false)
   const [modal, setModal] = useState(false)
   const toggleModal = () => {
     setModal(!modal)
+  }
+  const [modal2, setModal2] = useState(false)
+  const toggleModal2 = () => {
+    setModal2(!modal2)
   }
 
   if (modal) {
@@ -39,7 +45,30 @@ export default function Modal() {
   } else {
     document.body.classList.remove('active-modal')
   }
+  if (modal2) {
+    document.body.classList.add('active-modal2')
+  } else {
+    document.body.classList.remove('active-modal2')
+  }
+  const login = useGoogleLogin({
+    onSuccess: async (respose) => {
+      try {
+        const res = await axios.get(
+          'https://www.googleapis.com/oauth2/v3/userinfo',
+          {
+            headers: {
+              Authorization: `Bearer ${respose.access_token}`,
+            },
+          }
+        )
 
+        console.log(res.data)
+        setuser(res.data)
+      } catch (err) {
+        console.log(err)
+      }
+    },
+  })
   return (
     <>
       <div className='transparent'>
@@ -70,10 +99,15 @@ export default function Modal() {
             </div>
             <div className='second-row'>
               <button className='language'>Language</button>
-
-              <button onClick={toggleModal} className='login'>
-                Login
-              </button>
+              {user ? (
+                <div className='user'>
+                  {user.given_name} <button className='logout'>Logout</button>
+                </div>
+              ) : (
+                <button onClick={toggleModal} className='login'>
+                  Login
+                </button>
+              )}
             </div>
           </nav>
         </div>
@@ -85,22 +119,7 @@ export default function Modal() {
                   <p className='text'>Fill In The Gap, Changing The Trend</p>
                   <div class='container'>
                     <div class='center'>
-                      <button class='btn' onClick={toggleModal}>
-                        {/* <svg
-                          width='180px'
-                          height='60px'
-                          viewBox='0 0 180 60'
-                          class='border'
-                        >
-                          <polyline
-                            points='179,1 179,59 1,59 1,1 179,1'
-                            class='bg-line'
-                          />
-                          <polyline
-                            points='179,1 179,59 1,59 1,1 179,1'
-                            class='hl-line'
-                          />
-                        </svg> */}
+                      <button class='btn-modal2' onClick={toggleModal2}>
                         <span>Create Account</span>
                       </button>
                     </div>
@@ -111,6 +130,11 @@ export default function Modal() {
           </div>
         </div>
       </div>
+      {modal2 && (
+        <div>
+          <div>enter your mobile number</div>
+        </div>
+      )}
 
       {modal && (
         <div className='modal'>
@@ -143,9 +167,16 @@ export default function Modal() {
                 </div>
               </div>
             </div>
-            <button className='google'>Signin with Google</button>
+            <div>
+              {' '}
+              <button className='google' onClick={() => login()}>
+                Signin with Google
+              </button>
+            </div>
             <button className='facebook'>Signin with Facebook</button>
-            <button className='number'>Signin with Phone Number</button>
+            <button className='number' onClick={toggleModal2}>
+              Signin with Phone Number
+            </button>
             <p className='troubleshooting'>
               <a href='#'>Trouble Logging In?</a>
             </p>
@@ -162,6 +193,68 @@ export default function Modal() {
                 CLOSE
               </button>
             </div> */}
+        </div>
+      )}
+
+      {modal2 && (
+        <div className='modal2'>
+          <div onClick={toggleModal2} className='overlay2'></div>
+
+          <div className='modal-content2'>
+            <div className='modal-text2'>
+              {/* <div className='full-logo1'>
+                <img src='full logo1.png' alt='' />
+              </div> */}
+
+              <p className='started2'>Create Account</p>
+            </div>{' '}
+            <div className='close-modal2'>
+              <div className='outer2'>
+                <div className='inner2'>
+                  <button className='close2' onClick={toggleModal2}>
+                    <label>Back</label>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className='field'>
+                <div className='input_field'>
+                  <input
+                    type='email'
+                    name='email'
+                    placeholder='Email'
+                    required
+                  />
+                </div>
+                <div className='input_field'>
+                  <input
+                    type='password'
+                    name='password'
+                    placeholder='Password'
+                    required
+                  />
+                </div>
+                <div className='input_field'>
+                  <input
+                    type='password'
+                    name='password'
+                    placeholder='Re-type Password'
+                    required
+                  />
+                </div>
+                <div className='input_field'></div>
+                <div className='input_field'></div>
+              </div>
+            </div>
+            <p className='gettheapp'>Get The App!</p>
+            <button className='Google_play'>
+              <img src='/google_play.png' alt='Google_play' />
+            </button>
+            <button className='apple_store'>
+              <img src='/apple.png' alt='' />
+            </button>
+          </div>
         </div>
       )}
     </>
